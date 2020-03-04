@@ -13,7 +13,7 @@ from charms.slurm.helpers import render_gres_config
 
 from charmhelpers.core.host import service_stop
 from charmhelpers.core.host import service_pause
-from charmhelpers.core.host import service_start
+from charmhelpers.core.host import service_resume
 from charmhelpers.core.host import service_restart
 from charmhelpers.core.host import service_running
 from charmhelpers.core.hookenv import config
@@ -86,7 +86,9 @@ def configure_node(cluster_changed, cluster_joined):
 
     # Make sure slurmd is running
     if not service_running(SLURMD_SERVICE):
-        service_start(SLURMD_SERVICE)
+        service_resume(SLURMD_SERVICE)
+    else:
+        service_restart(SLURMD_SERVICE)
 
     flags.set_flag('slurm-node.configured')
     log('Set {} flag'.format('slurm-node.configured'))
