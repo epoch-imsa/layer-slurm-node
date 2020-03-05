@@ -53,7 +53,8 @@ def missing_controller():
 @reactive.when('endpoint.slurm-cluster.joined')
 @reactive.when_not('slurm-node.info.sent')
 def send_node_info(cluster_endpoint):
-    cluster_endpoint.send_node_info(hostname=gethostname(),
+    hostname = gethostname()
+    cluster_endpoint.send_node_info(hostname=hostname.split(","),
                                     partition=config('partition'),
                                     default=config('default'),
                                     inventory=get_inventory())
@@ -73,7 +74,8 @@ def configure_node(cluster_changed, cluster_joined):
     render_munge_key(context=controller_data)
     # If the munge.key has been changed on the controller and munge is
     # running, the service must be restarted to use the new key
-    if flags.is_flag_set('endpoint.slurm-cluster.changed.munge_key') and service_running(MUNGE_SERVICE):
+    if flags.is_flag_set('endpoint.slurm-cluster.changed.munge_key') and \
+            service_running(MUNGE_SERVICE):
         log('Restarting munge due to key change on slurm-controller')
         service_restart(MUNGE_SERVICE)
 
@@ -81,7 +83,11 @@ def configure_node(cluster_changed, cluster_joined):
 
     gres_context = get_inventory()
     if (gres_context['gpus'] > 0):
-        gres_context.update({key:controller_data[key] for key in ['slurm_user']})
+        gres_context.update(
+            {
+                key: controller_data[key] for key in ['slurm_user']
+            }
+        )
         render_gres_config(context=gres_context)
 
     # Make sure slurmd is running
@@ -131,11 +137,17 @@ def setup_storage():
 
 @reactive.when_file_changed(SLURM_CONFIG_PATH)
 def restart_on_slurm_change():
-    log('Restarting slurmd due to changed configuration on disk (%s)' % SLURM_CONFIG_PATH)
+    log(
+        'Restarting slurmd due to changed '
+        f'configuration on disk {SLURM_CONFIG_PATH}'
+    )
     service_restart(SLURMD_SERVICE)
 
 
 @reactive.when_file_changed(MUNGE_KEY_PATH)
 def restart_on_munge_change():
-    log('Restarting munge due to changed munge key on disk (%s)' % MUNGE_KEY_PATH)
+    log(
+        'Restarting munge due to changed '
+        f'munge key on disk {MUNGE_KEY_PATH}'
+    )
     service_restart(MUNGE_SERVICE)
