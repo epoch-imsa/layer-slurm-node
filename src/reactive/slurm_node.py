@@ -11,6 +11,7 @@ from charms.slurm.helpers import render_munge_key
 from charms.slurm.helpers import render_slurm_config
 from charms.slurm.helpers import render_gres_config
 
+from charmhelpers.core.host import service_start
 from charmhelpers.core.host import service_stop
 from charmhelpers.core.host import service_pause
 from charmhelpers.core.host import service_resume
