@@ -55,7 +55,7 @@ def missing_controller():
 @reactive.when_not('slurm-node.info.sent')
 def send_node_info(cluster_endpoint):
     hostname = gethostname()
-    cluster_endpoint.send_node_info(hostname=hostname.split(","),
+    cluster_endpoint.send_node_info(hostname=hostname.split(",")[0],
                                     partition=config('partition'),
                                     default=config('default'),
                                     inventory=get_inventory())
