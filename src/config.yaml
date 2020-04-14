@@ -14,7 +14,7 @@ options:
     type: string
     default: 
     description: >-
-      'Timelimit set for jobs on the specified partiton. Default to no limit.'
+      'Timelimit set for jobs on the specified partiton in minutes. Default to no limit.'
   default:
     type: boolean
     default: False
