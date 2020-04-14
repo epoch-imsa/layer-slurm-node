@@ -10,6 +10,11 @@ options:
       in that partition record or replaced with a different set of default
       values. Each line where PartitionName is "DEFAULT" will replace or add to
       previous default values and not a reinitialize the default values.'
+  timelimit:
+    type: string
+    default: 
+    description: >-
+      'Timelimit set for jobs on the specified partiton. Default to no limit.'
   default:
     type: boolean
     default: False

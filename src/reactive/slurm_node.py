@@ -58,6 +58,7 @@ def send_node_info(cluster_endpoint):
     cluster_endpoint.send_node_info(hostname=hostname.split(".")[0],
                                     partition=config('partition'),
                                     default=config('default'),
+                                    timelimit=config('timelimit'),
                                     inventory=get_inventory())
     flags.set_flag('slurm-node.info.sent')
     log('Set {} flag'.format('slurm-node.info.sent'))
