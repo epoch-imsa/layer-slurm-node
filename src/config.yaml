@@ -12,7 +12,7 @@ options:
       previous default values and not a reinitialize the default values.'
   timelimit:
     type: string
-    default: 
+    default: UNLIMITED
     description: >-
       'Timelimit set for jobs on the specified partiton in minutes. Default to no limit.'
   default:
